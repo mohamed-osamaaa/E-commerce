@@ -15,6 +15,7 @@ export class ProductList {
   id: number;
   @Expose({ name: 'product_title' })
   title: string;
+
   @Expose({ name: 'product_description' })
   description: string;
   @Expose({ name: 'product_price' })
@@ -22,9 +23,7 @@ export class ProductList {
   @Expose({ name: 'product_stock' })
   stock: number;
   @Expose({ name: 'product_images' })
-  @Transform(({ value }) =>
-    Array.isArray(value) ? value : value ? value.toString().split(',') : [],
-  )
+  @Transform(({ value }) => value.toString().split(','))
   images: string[];
 
   @Transform(({ obj }) => {

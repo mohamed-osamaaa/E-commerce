@@ -11,16 +11,15 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Query,
-  UploadedFiles,
   UseGuards,
-  UseInterceptors,
 } from '@nestjs/common';
-import { FilesInterceptor } from '@nestjs/platform-express';
 
 import { CreateProductDto } from './dto/create-product.dto';
 import { ProductsDto } from './dto/products.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductEntity } from './entities/product.entity';
 import { ProductsService } from './products.service';
 
@@ -29,19 +28,12 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @UseGuards(AuthenticationGuard, AuthorizeGuard([Roles.ADMIN]))
-  @UseInterceptors(FilesInterceptor('images', 5))
   @Post()
   async create(
     @Body() createProductDto: CreateProductDto,
     @CurrentUser() currentUser: UserEntity,
-    @UploadedFiles() files: Express.Multer.File[],
   ): Promise<ProductEntity> {
-    // console.log('Received files:', files); // Debugging
-    return await this.productsService.create(
-      createProductDto,
-      currentUser,
-      files,
-    );
+    return await this.productsService.create(createProductDto, currentUser);
   }
 
   @SerializeIncludes(ProductsDto)
@@ -55,22 +47,19 @@ export class ProductsController {
     return await this.productsService.findOne(+id);
   }
 
-  // @Patch(':id')
-  // @UseGuards(AuthenticationGuard, AuthorizeGuard([Roles.ADMIN]))
-  // @UseInterceptors(FileInterceptor('image'))
-  // async update(
-  //   @Param('id') id: string,
-  //   @Body() updateProductDto: UpdateProductDto,
-  //   @CurrentUser() currentUser: UserEntity,
-  //   @UploadedFile() file: Express.Multer.File,
-  // ): Promise<ProductEntity> {
-  //   return await this.productsService.update(
-  //     +id,
-  //     updateProductDto,
-  //     currentUser,
-  //     file,
-  //   );
-  // }
+  @UseGuards(AuthenticationGuard, AuthorizeGuard([Roles.ADMIN]))
+  @Patch(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() updateProductDto: UpdateProductDto,
+    @CurrentUser() currentUser: UserEntity,
+  ): Promise<ProductEntity> {
+    return await this.productsService.update(
+      +id,
+      updateProductDto,
+      currentUser,
+    );
+  }
 
   @Delete(':id')
   async remove(@Param('id') id: string) {

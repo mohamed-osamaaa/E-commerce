@@ -14,8 +14,8 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { CloudinaryService } from '../utility/cloudinary/cloudinary.service';
 import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductEntity } from './entities/product.entity';
 
 @Injectable()
@@ -26,30 +26,19 @@ export class ProductsService {
     private readonly categoryService: CategoriesService,
     @Inject(forwardRef(() => OrdersService))
     private readonly orderService: OrdersService,
-    private readonly cloudinaryService: CloudinaryService,
   ) {}
 
   async create(
     createProductDto: CreateProductDto,
     currentUser: UserEntity,
-    files?: Express.Multer.File[],
   ): Promise<ProductEntity> {
     const category = await this.categoryService.findOne(
       +createProductDto.categoryId,
     );
+    const product = this.productRepository.create(createProductDto);
 
-    const product = this.productRepository.create({
-      ...createProductDto,
-      category,
-      addedBy: currentUser,
-      images: [],
-    });
-
-    if (files && files.length > 0) {
-      // This will handle both single and multiple file uploads
-      const uploadResult = await this.cloudinaryService.uploadFiles(files);
-      product.images = uploadResult; // Cloudinary returns an array of URLs
-    }
+    product.category = category;
+    product.addedBy = currentUser;
 
     return await this.productRepository.save(product);
   }
@@ -57,6 +46,7 @@ export class ProductsService {
   async findAll(
     query: any,
   ): Promise<{ products: any[]; totalProducts; limit }> {
+    // let filteredTotalProducts: number;
     let limit: number;
 
     if (!query.limit) {
@@ -118,11 +108,10 @@ export class ProductsService {
       queryBuilder.offset(query.offset);
     }
 
-    const products = await queryBuilder.getMany();
+    const products = await queryBuilder.getRawMany();
 
     return { products, totalProducts, limit };
   }
-
   async findOne(id: number) {
     const product = await this.productRepository.findOne({
       where: { id: id },
@@ -146,30 +135,23 @@ export class ProductsService {
     return product;
   }
 
-  // async update(
-  //   id: number,
-  //   updateProductDto: Partial<UpdateProductDto>,
-  //   currentUser: UserEntity,
-  //   file: Express.Multer.File,
-  // ): Promise<ProductEntity> {
-  //   const product = await this.findOne(id);
-  //   Object.assign(product, updateProductDto);
-  //   product.addedBy = currentUser;
+  async update(
+    id: number,
+    updateProductDto: Partial<UpdateProductDto>,
+    currentUser: UserEntity,
+  ): Promise<ProductEntity> {
+    const product = await this.findOne(id);
+    Object.assign(product, updateProductDto);
+    product.addedBy = currentUser;
+    if (updateProductDto.categoryId) {
+      const category = await this.categoryService.findOne(
+        +updateProductDto.categoryId,
+      );
+      product.category = category;
+    }
 
-  //   if (updateProductDto.categoryId) {
-  //     const category = await this.categoryService.findOne(
-  //       +updateProductDto.categoryId,
-  //     );
-  //     product.category = category;
-  //   }
-
-  //   if (file) {
-  //     const uploadResult = await this.cloudinaryService.uploadFile(file);
-  //     product.images = [uploadResult.secure_url];
-  //   }
-
-  //   return await this.productRepository.save(product);
-  // }
+    return await this.productRepository.save(product);
+  }
   async remove(id: number) {
     const product = await this.findOne(id);
     // console.log(product);
