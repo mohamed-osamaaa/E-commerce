@@ -1,8 +1,6 @@
 import { dataSourceOptions } from 'db/data-source';
-import * as multer from 'multer';
 
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
-import { MulterModule } from '@nestjs/platform-express';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { CategoriesModule } from './categories/categories.module';
@@ -20,9 +18,6 @@ import { CurrentUserMiddleware } from './utility/middlewares/current-user.middle
     ProductsModule,
     ReviewsModule,
     OrdersModule,
-    MulterModule.register({
-      storage: multer.memoryStorage(), // Use multer.memoryStorage() here
-    }),
   ],
   controllers: [],
   providers: [],

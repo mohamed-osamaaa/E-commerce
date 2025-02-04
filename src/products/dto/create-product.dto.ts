@@ -1,13 +1,9 @@
-import { Transform } from 'class-transformer';
 import {
   IsArray,
-  IsInt,
   IsNotEmpty,
   IsNumber,
-  IsOptional,
   IsPositive,
   IsString,
-  Max,
   Min,
 } from 'class-validator';
 
@@ -20,29 +16,24 @@ export class CreateProductDto {
   @IsString()
   description: string;
 
-  @Transform(({ value }) => parseFloat(value))
-  @IsNumber({}, { message: 'Price must be a number' })
-  @IsPositive({ message: 'Price should be a positive number' })
-  @Max(999999, { message: 'Price is too high' }) // Optional limit
+  @IsNotEmpty({ message: 'price should not be empty' })
+  @IsNumber(
+    { maxDecimalPlaces: 2 },
+    { message: 'price should be number & max decimal precision 2' },
+  )
+  @IsPositive({ message: 'price should be positive number' })
   price: number;
 
-  @Transform(({ value }) => parseInt(value))
-  @IsInt({ message: 'Stock should be an integer' })
-  @Min(0, { message: 'Stock cannot be negative' })
+  @IsNotEmpty({ message: 'stock should not be empty.' })
+  @IsNumber({}, { message: 'stock should be number' })
+  @Min(0, { message: 'stock can not be negative.' })
   stock: number;
 
-  @Transform(({ value }) =>
-    isNaN(parseInt(value)) ? undefined : parseInt(value),
-  )
-  @IsOptional()
-  @IsInt({ message: 'Category ID should be a number' })
-  categoryId?: number;
+  @IsNotEmpty({ message: 'images should not be empty.' })
+  @IsArray({ message: 'images should be in array format.' })
+  images: string[];
 
-  @IsOptional()
-  @IsArray({ message: 'Images must be an array' })
-  @IsString({ each: true, message: 'Each image URL must be a string' })
-  @Transform(({ value }) =>
-    Array.isArray(value) ? value : value ? [value] : [],
-  )
-  images?: string[];
+  @IsNotEmpty({ message: 'category should not be empty.' })
+  @IsNumber({}, { message: 'category id should be a number' })
+  categoryId: number;
 }
