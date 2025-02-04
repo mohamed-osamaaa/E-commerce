@@ -1,5 +1,4 @@
 import {
-  IsArray,
   IsNotEmpty,
   IsNumber,
   IsPositive,
@@ -29,9 +28,9 @@ export class CreateProductDto {
   @Min(0, { message: 'stock can not be negative.' })
   stock: number;
 
-  @IsNotEmpty({ message: 'images should not be empty.' })
-  @IsArray({ message: 'images should be in array format.' })
-  images: string[];
+  // @IsNotEmpty({ message: 'images should not be empty.' })
+  // @IsArray({ message: 'images should be in array format.' })
+  // images: string[];
 
   @IsNotEmpty({ message: 'category should not be empty.' })
   @IsNumber({}, { message: 'category id should be a number' })

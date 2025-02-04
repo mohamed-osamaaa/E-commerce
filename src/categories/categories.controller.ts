@@ -7,7 +7,6 @@ import { AuthorizeGuard } from 'src/utility/guards/authorization.guard';
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Param,
   Patch,
@@ -52,9 +51,9 @@ export class CategoriesController {
     return await this.categoriesService.update(+id, updateCategoryDto);
   }
 
-  @UseGuards(AuthenticationGuard, AuthorizeGuard([Roles.ADMIN]))
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.categoriesService.remove(+id);
-  }
+  // @UseGuards(AuthenticationGuard, AuthorizeGuard([Roles.ADMIN]))
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.categoriesService.remove(+id);
+  // }
 }
