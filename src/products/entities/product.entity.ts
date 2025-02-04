@@ -29,8 +29,8 @@ export class ProductEntity {
   @Column()
   stock: number;
 
-  @Column('simple-array')
-  images: string[];
+  // @Column('simple-array')
+  // images: string[];
 
   @CreateDateColumn()
   createdAt: Date;

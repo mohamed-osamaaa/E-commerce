@@ -54,10 +54,11 @@ export class CategoriesService {
     return await this.categoryRepository.save(category);
   }
 
-  async remove(id: number): Promise<string> {
-    const category = await this.findOne(id);
-    if (!category) throw new NotFoundException('Category not found.');
-    await this.categoryRepository.delete(id);
-    return `Category #${id} removed successfully.`;
-  }
+  //reference in Database
+  // async remove(id: number): Promise<string> {
+  //   const category = await this.findOne(id);
+  //   if (!category) throw new NotFoundException('Category not found.');
+  //   await this.categoryRepository.delete(id);
+  //   return `Category #${id} removed successfully.`;
+  // }
 }
