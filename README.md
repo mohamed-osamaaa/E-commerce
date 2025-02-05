@@ -2,7 +2,7 @@
 
 ## Description
 
-This is a scalable and modular eCommerce REST API built with NestJS. It includes authentication, user management, product handling, order processing, and reviews. It uses JWT for authentication, bcrypt for password hashing, and DTOs for validation.
+This is a scalable and modular eCommerce REST API built with NestJS. It includes authentication, user management, product handling, order processing, and reviews. It uses JWT for authentication, authorization roles(admin,user), bcrypt for password hashing, and DTOs for validation.
 
 ## Features
 
