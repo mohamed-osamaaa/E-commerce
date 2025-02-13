@@ -17,7 +17,7 @@ export class SerializeInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     console.log('Before...');
 
-    const now = Date.now();
+    // const now = Date.now();
     return next.handle().pipe(
       map((data: any) => {
         return plainToClass(this.dto, data, { exposeUnsetFields: true });
