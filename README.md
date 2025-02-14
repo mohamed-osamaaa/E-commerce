@@ -2,7 +2,7 @@
 
 ## Description
 
-This is a scalable and modular eCommerce REST API built with NestJS. It includes authentication, user management, product handling, order processing, and reviews. It uses JWT for authentication, authorization roles(admin,user), bcrypt for password hashing, and DTOs for validation.
+This is a scalable and modular eCommerce REST API built with NestJS. It includes authentication, user management, product handling, order processing, and reviews. It uses JWT for authentication, authorization roles (admin, user), bcrypt for password hashing, and DTOs for validation. Additionally, it leverages TypeORM migrations for database version control.
 
 ## Features
 
@@ -13,12 +13,17 @@ This is a scalable and modular eCommerce REST API built with NestJS. It includes
 - **Review System** (Product Reviews and Ratings)
 - **Modular Architecture** using NestJS Modules
 - **Database**: TypeORM with PostgreSQL
+- **Database Migrations** using TypeORM to manage schema changes efficiently
+
+## Repository
+
+- **GitHub Repository**: [E-commerce](https://github.com/mohamed-osamaaa/E-commerce)
 
 ## Installation
 
 ```bash
 # Clone the repository
-git clone <repo-url>
+git clone https://github.com/mohamed-osamaaa/E-commerce
 
 # Navigate to the project directory
 cd E-commerce
@@ -55,6 +60,21 @@ npm run build
 npm run start
 ```
 
+## Running Database Migrations
+
+To manage database schema changes efficiently, this project uses TypeORM migrations.
+
+```bash
+# Generate a new migration
+npm run migration:generate
+
+# Run pending migrations
+npm run migration:run
+
+# Revert the last migration
+npm run migration:revert
+```
+
 ## API Documentation (Postman Collections)
 
 - [Users API](https://www.postman.com/speeding-flare-128587/workspace/e-commerce/collection/37065341-6f8e519e-042e-4395-a886-cf65c262204f?action=share\&creator=37065341)
@@ -70,6 +90,5 @@ npm run start
 - **PostgreSQL** - Database
 - **JWT & Bcrypt** - Authentication & Security
 - **DTO Validation** - Request Data Validation
-
-##
+- **TypeORM Migrations** - Database Schema Management
 
