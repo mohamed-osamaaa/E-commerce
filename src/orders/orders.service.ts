@@ -67,7 +67,7 @@ export class OrdersService {
       });
     }
 
-    const op = await this.opRepository
+    await this.opRepository
       .createQueryBuilder()
       .insert()
       .into(OrdersProductsEntity)
