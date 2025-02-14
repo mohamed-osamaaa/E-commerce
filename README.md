@@ -15,10 +15,6 @@ This is a scalable and modular eCommerce REST API built with NestJS. It includes
 - **Database**: TypeORM with PostgreSQL
 - **Database Migrations** using TypeORM to manage schema changes efficiently
 
-## Repository
-
-- **GitHub Repository**: [E-commerce](https://github.com/mohamed-osamaaa/E-commerce)
-
 ## Installation
 
 ```bash
@@ -66,7 +62,7 @@ To manage database schema changes efficiently, this project uses TypeORM migrati
 
 ```bash
 # Generate a new migration
-npm run migration:generate
+npm run migration:generate -- -n MigrationName
 
 # Run pending migrations
 npm run migration:run
